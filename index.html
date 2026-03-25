@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Un espacio hecho con amor, para cuando lo necesites." />
+  <title>Para vos 💙</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== PANTALLA INICIAL ===================== -->
+  <section id="intro" class="screen active">
+    <div class="stars" aria-hidden="true"></div>
+    <div class="intro-content">
+      <!-- Píldora de días juntos -->
+      <div class="days-pill" id="days-pill" aria-label="Días juntos">
+        <span class="days-pill-icon" aria-hidden="true">💙</span>
+        <span id="days-count">...</span> días juntos
+      </div>
+
+      <div class="intro-icon" aria-hidden="true">💙</div>
+      <!-- El saludo cambia según la hora (lo pone JS) -->
+      <h1 class="intro-title" id="intro-title">
+        Si estás acá, es porque no estás teniendo un buen momento...
+      </h1>
+      <p class="intro-sub" id="intro-sub">
+        Solo quiero que sepas que no estás sola 💙
+      </p>
+      <button id="btn-entrar" class="btn-primary" onclick="entrar()">
+        Entrar
+      </button>
+    </div>
+    <!-- Partículas flotantes decorativas -->
+    <div class="floating-particles" aria-hidden="true">
+      <span class="particle">✦</span>
+      <span class="particle">✧</span>
+      <span class="particle">✦</span>
+      <span class="particle">✧</span>
+      <span class="particle">✦</span>
+    </div>
+  </section>
+
+  <!-- ===================== PANTALLA PRINCIPAL ===================== -->
+  <main id="main-app" class="hidden">
+
+    <!-- Navegación suave -->
+    <nav class="nav-bar" role="navigation" aria-label="Secciones">
+      <button class="nav-btn active" onclick="scrollToSection('calma')" id="nav-calma">🌙 Calma</button>
+      <button class="nav-btn" onclick="scrollToSection('recuerdos')" id="nav-recuerdos">💫 Recuerdos</button>
+      <button class="nav-btn" onclick="scrollToSection('mensaje')" id="nav-mensaje">💌 Mensaje</button>
+      <button class="nav-btn" onclick="scrollToSection('musica')" id="nav-musica">🎧 Música</button>
+      <button class="nav-btn" onclick="scrollToSection('ternura')" id="nav-ternura">🐾 Un respiro</button>
+    </nav>
+
+    <!-- ============= SECCIÓN 1: CALMA ============= -->
+    <section id="calma" class="section">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-emoji" aria-hidden="true">🌙</span>
+          <h2 class="section-title">Un momento de calma</h2>
+          <p class="section-subtitle">Respirá. Estoy acá.</p>
+        </div>
+
+        <!-- Tarjeta de frase de calma -->
+        <div class="calma-card" id="calma-card">
+          <div class="wave-decoration" aria-hidden="true"></div>
+          <p class="calma-frase" id="calma-frase">
+            "No todo lo que sentís ahora es permanente"
+          </p>
+          <div class="calma-dots" id="calma-dots" aria-label="Progreso de frases"></div>
+        </div>
+
+        <button class="btn-calm" id="btn-calma" onclick="mostrarSiguienteFrase()">
+          <span class="btn-icon" aria-hidden="true">🌬️</span>
+          Necesito calma
+        </button>
+
+        <!-- Card de respiración -->
+        <div class="breath-card">
+          <p class="breath-label">Ejercicio de respiración</p>
+          <div class="breath-circle" id="breath-circle" onclick="toggleBreath()" role="button" aria-label="Iniciar ejercicio de respiración" tabindex="0">
+            <span class="breath-text" id="breath-text">Tocá para respirar</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= SECCIÓN 2: RECUERDOS ============= -->
+    <section id="recuerdos" class="section">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-emoji" aria-hidden="true">💫</span>
+          <h2 class="section-title">Recordar lo lindo</h2>
+          <p class="section-subtitle">Momentos que guardamos juntos</p>
+        </div>
+
+        <!-- Visor de recuerdos: imagen 9:16 centrada -->
+        <div class="memory-viewer" id="memory-viewer" aria-live="polite" aria-label="Recuerdo actual">
+          <!-- Estado inicial / placeholder -->
+          <div class="memory-placeholder" id="memory-placeholder">
+            <span aria-hidden="true">�</span>
+            <p>Tocá el botón para recordar algo lindo...</p>
+          </div>
+
+          <!-- Tarjeta de recuerdo (se llena con JS) -->
+          <div class="memory-card hidden" id="memory-card">
+            <div class="memory-img-wrap">
+              <img id="memory-img" src="" alt="Recuerdo" class="memory-img" />
+              <div class="memory-img-overlay"></div>
+            </div>
+            <div class="memory-caption">
+              <p class="memory-text" id="memory-text"></p>
+              <span class="memory-time" id="memory-time"></span>
+            </div>
+          </div>
+
+          <!-- Indicador de progreso (puntos) -->
+          <div class="memory-dots" id="memory-dots" aria-label="Progreso de recuerdos"></div>
+        </div>
+
+        <button class="btn-remember" id="btn-recuerdo" onclick="mostrarRecuerdo()">
+          <span class="btn-icon" aria-hidden="true">✨</span>
+          Recordar algo lindo
+        </button>
+      </div>
+    </section>
+
+    <!-- ============= SECCIÓN 3: MENSAJE ============= -->
+    <section id="mensaje" class="section">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-emoji" aria-hidden="true">💌</span>
+          <h2 class="section-title">Un mensaje mío</h2>
+          <p class="section-subtitle">Escrito con todo lo que siento</p>
+        </div>
+
+        <!-- Carta personal -->
+        <div class="letter-container" id="letter-container">
+          <div class="letter-paper">
+            <div class="letter-header">
+              <span class="letter-date" id="letter-date"></span>
+            </div>
+            <!-- 💡 EDITAR: Cambiá este texto con tu mensaje personal -->
+            <div class="letter-body" id="letter-body" contenteditable="false">
+              <p>Mi amor,</p>
+              <p>
+                Hice este lugar para vos, para los momentos difíciles.
+                Para que cuando sientas que todo pesa demasiado,
+                tengas un rinconcito donde saber que alguien te quiere
+                con todo.
+              </p>
+              <p>
+                No tenés que estar bien siempre. No tenés que tenerlo
+                todo claro. Solo tenés que seguir siendo vos. Se vos misma siempre,
+                no importa lo que te digan los demas el precio de tu autentecidad 
+                no hay nadie que lo pueda pagar es infinito.
+                Espero que te guste este pequeño regalo. :)
+              </p>
+              <p>
+                Estoy acá, siempre. 💙
+              </p>
+
+              <!-- 💡 EDITAR: Cambiá "Tu nombre" por tu nombre real -->
+              <p class="letter-signature">Con todo mi amor,<br /><em>Tu amor 💙</em></p>
+            </div>
+          </div>
+    </section>
+
+    <!-- ============= SECCIÓN 4: MÚSICA ============= -->
+    <section id="musica" class="section">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-emoji" aria-hidden="true">🎧</span>
+          <h2 class="section-title">Para cuando lo necesites</h2>
+          <p class="section-subtitle">Música que te abraza</p>
+        </div>
+
+        <!-- Reproductor principal -->
+        <div class="player-container" id="player-container">
+          <div class="player-idle" id="player-idle">
+            <span aria-hidden="true">🎵</span>
+            <p>Elegí una canción para empezar</p>
+          </div>
+          <div class="player-active hidden" id="player-active">
+            <p class="player-frase" id="player-frase"></p>
+            <div class="iframe-wrapper">
+              <iframe
+                id="youtube-player"
+                src=""
+                title="Reproductor de música"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            </div>
+            <p class="player-song-name" id="player-song-name"></p>
+          </div>
+        </div>
+
+        <!-- Categorías de música -->
+
+        <!-- Categoría A: Calmarte -->
+        <div class="music-category">
+          <h3 class="category-title">
+            <span aria-hidden="true">🌙</span> Para calmarte
+          </h3>
+          <div class="songs-grid">
+
+            <!-- Canción: Bésame -->
+            <button
+              class="song-card"
+              id="song-besame"
+              onclick="reproducir('RiF3l0ZZeeU', 'Valentino ft. Manuel Turizo – Bésame', 'Para cuando necesitás que alguien te diga lo que sentís')"
+              aria-label="Reproducir Bésame de Valentino ft. Manuel Turizo"
+            >
+              <div class="song-art" aria-hidden="true">🎶</div>
+              <div class="song-info">
+                <span class="song-name">Bésame</span>
+                <span class="song-artist">Valentino ft. Manuel Turizo</span>
+              </div>
+              <span class="song-play" aria-hidden="true">▶</span>
+            </button>
+
+            <!-- Canción: Quiéreme mientras se pueda -->
+            <button
+              class="song-card"
+              id="song-quiereme"
+              onclick="reproducir('9dC5h1ntPXQ', 'Manuel Turizo – Quiéreme mientras se pueda', 'Para recordar que el amor de hoy vale todo')"
+              aria-label="Reproducir Quiéreme mientras se pueda de Manuel Turizo"
+            >
+              <div class="song-art" aria-hidden="true">💜</div>
+              <div class="song-info">
+                <span class="song-name">Quiéreme mientras se pueda</span>
+                <span class="song-artist">Manuel Turizo</span>
+              </div>
+              <span class="song-play" aria-hidden="true">▶</span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Categoría B: Para pensar -->
+        <div class="music-category">
+          <h3 class="category-title">
+            <span aria-hidden="true">💭</span> Para pensar
+          </h3>
+          <div class="songs-grid">
+
+            <!-- Canción: 444 -->
+            <button
+              class="song-card"
+              id="song-444"
+              onclick="reproducir('5M_n2UCe7DQ', 'Yan Block – 444', 'Para cuando la mente no para y necesitás soltar')"
+              aria-label="Reproducir 444 de Yan Block"
+            >
+              <div class="song-art" aria-hidden="true">🔮</div>
+              <div class="song-info">
+                <span class="song-name">444</span>
+                <span class="song-artist">Yan Block</span>
+              </div>
+              <span class="song-play" aria-hidden="true">▶</span>
+            </button>
+
+            <!-- Canción: Por un pendejo no se llora -->
+            <button
+              class="song-card"
+              id="song-pendejo"
+              onclick="reproducir('DTugpIRhuZw', 'Manuel Turizo – Por un pendejo no se llora', 'Porque sabés lo que valés, aunque a veces no lo sintás')"
+              aria-label="Reproducir Por un pendejo no se llora de Manuel Turizo"
+            >
+              <div class="song-art" aria-hidden="true">🌹</div>
+              <div class="song-info">
+                <span class="song-name">Por un pendejo no se llora</span>
+                <span class="song-artist">Manuel Turizo</span>
+              </div>
+              <span class="song-play" aria-hidden="true">▶</span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- Categoría C: Para sentirte acompañada -->
+        <div class="music-category">
+          <h3 class="category-title">
+            <span aria-hidden="true">❤️</span> Para sentirte acompañada
+          </h3>
+          <div class="songs-grid">
+
+            <!-- Canción: Quiero repetir -->
+            <button
+              class="song-card"
+              id="song-repetir"
+              onclick="reproducir('zkOU-IBGsR0', 'Ozuna ft. J Balvin – Quiero repetir', 'Esta es para cuando querés volver a los momentos felices')"
+              aria-label="Reproducir Quiero repetir de Ozuna ft. J Balvin"
+            >
+              <div class="song-art" aria-hidden="true">❤️</div>
+              <div class="song-info">
+                <span class="song-name">Quiero repetir</span>
+                <span class="song-artist">Ozuna ft. J Balvin</span>
+              </div>
+              <span class="song-play" aria-hidden="true">▶</span>
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============= SECCIÓN 5: TERNURA ============= -->
+    <section id="ternura" class="section">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-emoji" aria-hidden="true">🐾</span>
+          <h2 class="section-title">Un respiro</h2>
+          <p class="section-subtitle">Si todo se siente mucho… tomá un momento acá 🐾</p>
+        </div>
+
+        <!-- Visor de imagen tierna -->
+        <div class="ternura-viewer" id="ternura-viewer">
+          <!-- Placeholder inicial -->
+          <div class="ternura-placeholder" id="ternura-placeholder">
+            <div class="ternura-placeholder-inner">
+              <span class="ternura-placeholder-emoji" aria-hidden="true">🐶🐱</span>
+              <p>Tocá el botón y mirá qué lindo…</p>
+            </div>
+          </div>
+
+          <!-- Imagen tierna activa -->
+          <div class="ternura-card hidden" id="ternura-card">
+            <img
+              id="ternura-img"
+              src=""
+              alt="Un momento tierno"
+              class="ternura-img"
+            />
+            <div class="ternura-sparkles" aria-hidden="true">
+              <span class="sparkle">✨</span>
+              <span class="sparkle">💕</span>
+              <span class="sparkle">✨</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón de ternura -->
+        <button class="btn-ternura" id="btn-ternura" onclick="mostrarTernura()">
+          <span class="btn-icon" aria-hidden="true">🐾</span>
+          Necesito ternura
+        </button>
+
+        <!-- Mensaje debajo -->
+        <p class="ternura-mensaje">
+          Todo pasa. Los perritos y los gatitos lo saben. 🐶🐱
+        </p>
+
+      </div>
+    </section>
+
+        
+
+    <!-- ===== BOTÓN SOS FLOTANTE ===== -->
+    <button
+      class="sos-fab"
+      id="sos-fab"
+      onclick="toggleSOS()"
+      aria-label="Ayuda rápida para crisis"
+      aria-expanded="false"
+    >
+      <span class="sos-fab-icon" id="sos-fab-icon">🆘</span>
+    </button>
+
+    <!-- Panel SOS (se desliza desde abajo) -->
+    <div class="sos-panel" id="sos-panel" aria-hidden="true" role="dialog" aria-label="Panel de ayuda rápida">
+      <div class="sos-panel-inner">
+        <button class="sos-close" onclick="toggleSOS()" aria-label="Cerrar panel de ayuda">✕</button>
+        <h3 class="sos-title">Estoy acá. Respirá. 💙</h3>
+        <p class="sos-sub">Hacé esto paso a paso:</p>
+
+        <!-- Pasos rápidos de grounding -->
+        <ol class="sos-steps">
+          <li class="sos-step">
+            <span class="sos-step-num">1</span>
+            <span>Poné la mano en el pecho. Sentí el calor.</span>
+          </li>
+          <li class="sos-step">
+            <span class="sos-step-num">2</span>
+            <span>Inhalá por la nariz 4 segundos.</span>
+          </li>
+          <li class="sos-step">
+            <span class="sos-step-num">3</span>
+            <span>Sostené 4 segundos.</span>
+          </li>
+          <li class="sos-step">
+            <span class="sos-step-num">4</span>
+            <span>Exhalá lento por la boca, 6 segundos.</span>
+          </li>
+          <li class="sos-step">
+            <span class="sos-step-num">5</span>
+            <span>Nombrá 5 cosas que podés VER ahora mismo.</span>
+          </li>
+        </ol>
+
+        <!-- Frase de crisis -->
+        <div class="sos-frase-box">
+          <p class="sos-frase" id="sos-frase">"Estás a salvo. Esto va a pasar."</p>
+        </div>
+
+        <!-- Botón de ir a calma -->
+        <button class="sos-btn-calma" onclick="irACalma()">
+          <span aria-hidden="true">🌬️</span> Llevarme a la sección de calma
+        </button>
+      </div>
+    </div>
+    <!-- Overlay oscuro detrás del panel SOS -->
+    <div class="sos-overlay" id="sos-overlay" onclick="toggleSOS()"></div>
+    <!-- ============= SECCIÓN SORPRESA ============= -->
+    <section id="sorpresa" class="section section-sorpresa">
+      <div class="section-inner sorpresa-inner">
+        <div class="sorpresa-glow" aria-hidden="true"></div>
+        <span class="sorpresa-emoji" aria-hidden="true">💙</span>
+        <h2 class="sorpresa-title">Si llegaste hasta acá...</h2>
+        <p class="sorpresa-text">
+          ...lo estás haciendo increíble.<br />
+          Cada paso que diste hoy, por pequeño que haya sido,<br />
+          fue un acto de valentía.
+        </p>
+        <p class="sorpresa-firma">Te quiero exactamente como sos. 💙</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+      <p>Hecho con 💙 para vos · Para cuando lo necesités</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
