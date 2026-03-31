@@ -576,13 +576,16 @@ function scrollToSection(id) {
 }
 
 function initScrollSpy() {
-  const sections = ['calma', 'recuerdos', 'mensaje', 'musica', 'ternura'];
+  const sections = ['calma', 'recuerdos', 'mensaje', 'musica', 'ternura', 'teamo', 'motivos', 'mascota'];
   const navBtns = {
     calma:     document.getElementById('nav-calma'),
     recuerdos: document.getElementById('nav-recuerdos'),
     mensaje:   document.getElementById('nav-mensaje'),
     musica:    document.getElementById('nav-musica'),
     ternura:   document.getElementById('nav-ternura'),
+    teamo:     document.getElementById('nav-teamo'),
+    motivos:   document.getElementById('nav-motivos'),
+    mascota:   document.getElementById('nav-mascota'),
   };
 
   const observer = new IntersectionObserver(
@@ -614,7 +617,7 @@ function initScrollSpy() {
 function initRevealAnimations() {
   // Agregar clase 'reveal' a los elementos que quieras animar
   const targets = document.querySelectorAll(
-    ".section-header, .calma-card, .breath-card, .memory-viewer, .letter-container, .player-container, .music-category, .song-card, .ternura-viewer, .section-sorpresa"
+    ".section-header, .calma-card, .breath-card, .memory-viewer, .letter-container, .player-container, .music-category, .song-card, .ternura-viewer, .teamo-container, .motivo-card, .frasco-wrap, .mascota-card, .section-sorpresa"
   );
 
   targets.forEach((el) => el.classList.add("reveal"));
@@ -633,3 +636,355 @@ function initRevealAnimations() {
 
   targets.forEach((el) => observer.observe(el));
 }
+
+// ═══════════════════════════════════════════════════════════════
+//   SECCIÓN TE AMO
+// ═══════════════════════════════════════════════════════════════
+const IDIOMAS_TE_AMO = [
+  { idioma: "Alemán", texto: "Ich liebe dich" },
+  { idioma: "Árabe", texto: "أنا أحبك (Ana uhibbuka)" },
+  { idioma: "Chino Mandarín", texto: "我爱你 (Wǒ ài nǐ)" },
+  { idioma: "Coreano", texto: "사랑해 (Saranghae)" },
+  { idioma: "Español", texto: "Te amo" },
+  { idioma: "Francés", texto: "Je t'aime" },
+  { idioma: "Griego", texto: "Σ' αγαπώ (S' agapo)" },
+  { idioma: "Hebreo", texto: "אני אוהב אותך (Ani ohev otakh)" },
+  { idioma: "Hindi", texto: "मैं तुमसे प्यार करता हूँ (Main tumse pyar karta hoon)" },
+  { idioma: "Holandés", texto: "Ik hou van jou" },
+  { idioma: "Inglés", texto: "I love you" },
+  { idioma: "Italiano", texto: "Ti amo" },
+  { idioma: "Japonés", texto: "愛してる (Aishiteru)" },
+  { idioma: "Latín", texto: "Te amo" },
+  { idioma: "Portugués", texto: "Eu te amo" },
+  { idioma: "Ruso", texto: "Я люблю тебя (Ya lyublyu tebya)" },
+  { idioma: "Turco", texto: "Seni seviyorum" }
+];
+
+let indiceIdioma = 4; // Empieza en Español
+
+function cambiarIdioma() {
+  const wordEl = document.getElementById("teamo-word");
+  const langEl = document.getElementById("teamo-language");
+  const container = document.getElementById("teamo-container");
+  
+  if (!wordEl || !langEl) return;
+
+  // Evitar repetir el mismo
+  let nuevoIndice;
+  do {
+    Math.random(); // shuffle
+    nuevoIndice = Math.floor(Math.random() * IDIOMAS_TE_AMO.length);
+  } while (nuevoIndice === indiceIdioma);
+  
+  indiceIdioma = nuevoIndice;
+  const dato = IDIOMAS_TE_AMO[indiceIdioma];
+
+  // Animar salida
+  wordEl.classList.add("animating");
+  langEl.classList.add("animating");
+  
+  // Floating text effect
+  const floater = document.createElement("div");
+  floater.className = "float-teamo";
+  floater.textContent = dato.texto;
+  floater.style.left = Math.random() * 80 + 10 + "%";
+  floater.style.top = Math.random() * 80 + 10 + "%";
+  container.appendChild(floater);
+  
+  setTimeout(() => floater.remove(), 4000);
+
+  setTimeout(() => {
+    wordEl.textContent = dato.texto;
+    langEl.textContent = dato.idioma;
+    
+    // Animar entrada
+    wordEl.classList.remove("animating");
+    langEl.classList.remove("animating");
+  }, 500);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//   SECCIÓN MOTIVOS
+// ═══════════════════════════════════════════════════════════════
+const MOTIVOS_TE_AMO = [
+  "Amo cómo se te iluminan los ojitos cuando hablás de lo que te gusta.",
+  "La forma en la que me abrazás hace que el mundo deje de girar.",
+  "Me encanta tu sonrisa, es mi paisaje favorito en todo el mundo.",
+  "Sos la persona más dulce y genuina que conozco.",
+  "Amo cómo cuidás a los demás y el corazón gigante que tenés.",
+  "Me hacés sentir que en tus brazos siempre tengo un hogar.",
+  "Cada pequeña cosa de tu personalidad me vuelve loco.",
+  "Me encanta cómo me mirás cuando pensás que no me doy cuenta.",
+  "Porque aunque tengas mil dudas, para mí sos mi única certeza.",
+  "Sos increíblemente fuerte, aunque a veces vos misma no lo veas.",
+  "Amo tu manera de reírte de mis chistes malos.",
+  "Por la paz que me da escuchar tu voz al final de un día pesado."
+];
+
+function sacarMotivo() {
+  const wrap = document.querySelector(".frasco-wrap");
+  const card = document.getElementById("motivo-card");
+  const textEl = document.getElementById("motivo-text");
+  
+  if (!card.classList.contains("hidden")) return; // Ya hay uno abierto
+
+  // Animar "papelito"
+  const paper = document.createElement("div");
+  paper.className = "motivo-paper-anim";
+  // Evitar saltos de layout fijándolo
+  paper.style.left = "40%";
+  paper.style.top = "10%";
+  wrap.appendChild(paper);
+  
+  setTimeout(() => {
+    paper.remove();
+    // Mostrar tarjeta
+    const motivo = MOTIVOS_TE_AMO[Math.floor(Math.random() * MOTIVOS_TE_AMO.length)];
+    textEl.textContent = `"${motivo}"`;
+    
+    card.classList.remove("hidden");
+  }, 600);
+}
+
+function ocultarMotivo() {
+  const card = document.getElementById("motivo-card");
+  card.classList.add("hidden");
+}
+
+// ═══════════════════════════════════════════════════════════════
+//   SECCIÓN MASCOTA (COMPAÑERO VIRTUAL)
+// ═══════════════════════════════════════════════════════════════
+let mascotaData = {
+  tipo: null, // 'perrito' o 'gatito'
+  nombre: null,
+  felicidad: 100,
+  hambre: 100, // 100 es lleno
+  energia: 100,
+  xp: 0,
+  nivel: 1,
+  durmiendo: false
+};
+
+const XP_NIVEL = 100;
+
+try {
+  const guardado = localStorage.getItem("mascotaData");
+  if (guardado) mascotaData = Object.assign(mascotaData, JSON.parse(guardado));
+} catch(e) {}
+
+function actMascotaUi() {
+  document.getElementById("bar-felicidad").style.width = mascotaData.felicidad + "%";
+  document.getElementById("bar-hambre").style.width = mascotaData.hambre + "%";
+  document.getElementById("bar-energia").style.width = mascotaData.energia + "%";
+  
+  const nxLevelXp = mascotaData.nivel * XP_NIVEL;
+  document.getElementById("mascota-nivel-badge").textContent = `Lvl ${mascotaData.nivel} (${mascotaData.xp}/${nxLevelXp})`;
+  
+  const avatar = document.getElementById("mascota-avatar");
+  if (mascotaData.durmiendo) {
+    avatar.classList.add("durmiendo");
+  } else {
+    avatar.classList.remove("durmiendo");
+  }
+  
+  try {
+    localStorage.setItem("mascotaData", JSON.stringify(mascotaData));
+  } catch(e) {}
+}
+
+function elegirMascota(tipo) {
+  mascotaData.tipo = tipo;
+  mascotaData.felicidad = 100;
+  mascotaData.hambre = 100;
+  mascotaData.energia = 100;
+  mascotaData.xp = 0;
+  mascotaData.nivel = 1;
+  mascotaData.nombre = null;
+  mascotaData.durmiendo = false;
+  
+  document.getElementById("mascota-selector").classList.add("hidden");
+  document.getElementById("mascota-name").classList.remove("hidden");
+}
+
+function guardarNombreMascota() {
+  const input = document.getElementById("mascota-nombre-input").value.trim();
+  if (!input) return;
+  
+  mascotaData.nombre = input;
+  document.getElementById("mascota-name").classList.add("hidden");
+  iniciarMascotaUI();
+}
+
+function iniciarMascotaUI() {
+  if (!mascotaData.tipo || !mascotaData.nombre) return;
+  
+  document.getElementById("mascota-selector").classList.add("hidden");
+  document.getElementById("mascota-name").classList.add("hidden");
+  document.getElementById("mascota-interact").classList.remove("hidden");
+  
+  document.getElementById("mascota-nombre-display").textContent = mascotaData.nombre;
+  
+  const avatar = document.getElementById("mascota-avatar");
+  avatar.src = mascotaData.tipo === 'perrito' ? 'assets/images/perrito-mascota.png' : 'assets/images/gatito-mascota.png';
+  
+  const msg = document.getElementById("mascota-mensaje");
+  msg.textContent = `${mascotaData.nombre} está muy feliz de verte hoy.`;
+  
+  actMascotaUi();
+}
+
+function spawnFX(emoji) {
+  const container = document.getElementById("mascota-fx-container");
+  if (!container) return;
+  
+  const fx = document.createElement("div");
+  fx.className = "float-fx";
+  fx.textContent = emoji;
+  fx.style.left = Math.random() * 60 + 20 + "%";
+  fx.style.top = Math.random() * 60 + 20 + "%";
+  
+  container.appendChild(fx);
+  setTimeout(() => fx.remove(), 1500);
+}
+
+function ganarXP(cantidad) {
+  mascotaData.xp += cantidad;
+  const targetXp = mascotaData.nivel * XP_NIVEL;
+  
+  if (mascotaData.xp >= targetXp) {
+    mascotaData.nivel++;
+    mascotaData.xp -= targetXp;
+    spawnFX("⭐");
+    spawnFX("🎉");
+    document.getElementById("mascota-mensaje").textContent = `¡Felicidades! ${mascotaData.nombre} subió a nivel ${mascotaData.nivel}. Te quiere un poquito más. ❤️`;
+  }
+}
+
+function accionMascota(accion) {
+  if (mascotaData.durmiendo && accion !== 'dormir') {
+    // Despierta
+    mascotaData.durmiendo = false;
+  }
+
+  const avatar = document.getElementById("mascota-avatar");
+  const msg = document.getElementById("mascota-mensaje");
+  
+  if (accion === 'acariciar') {
+    mascotaData.felicidad = Math.min(100, mascotaData.felicidad + 20);
+    mascotaData.energia = Math.max(0, mascotaData.energia - 5);
+    msg.textContent = mascotaData.tipo === 'perrito' ? `¡A ${mascotaData.nombre} le encanta que lo acaricies! ❤️` : `¡${mascotaData.nombre} ronronea en tus brazos! ❤️`;
+    avatar.classList.add("acariciar");
+    setTimeout(() => avatar.classList.remove("acariciar"), 500);
+    for(let i=0; i<3; i++) setTimeout(() => spawnFX("❤️"), i*150);
+    ganarXP(15);
+    evaluarRegaloMascota();
+    
+  } else if (accion === 'alimentar') {
+    if (mascotaData.hambre >= 100) {
+      msg.textContent = `${mascotaData.nombre} ya está súper lleno. 😋`;
+    } else {
+      mascotaData.hambre = Math.min(100, mascotaData.hambre + 30);
+      mascotaData.felicidad = Math.min(100, mascotaData.felicidad + 10);
+      msg.textContent = mascotaData.tipo === 'perrito' ? `¡A ${mascotaData.nombre} le encantaron sus croquetitas! 🍖` : `¡A ${mascotaData.nombre} le encantó su pescadito! 🐟`;
+      avatar.classList.add("acariciar");
+      setTimeout(() => avatar.classList.remove("acariciar"), 500);
+      const food = mascotaData.tipo === 'perrito' ? "🍖" : "🐟";
+      for(let i=0; i<3; i++) setTimeout(() => spawnFX(food), i*150);
+      ganarXP(25);
+      evaluarRegaloMascota();
+    }
+    
+  } else if (accion === 'dormir') {
+    if (mascotaData.durmiendo) {
+      mascotaData.durmiendo = false;
+      msg.textContent = `${mascotaData.nombre} se acaba de despertar, listo para jugar contigo. ☀️`;
+    } else {
+      mascotaData.durmiendo = true;
+      mascotaData.energia = Math.min(100, mascotaData.energia + 50);
+      mascotaData.hambre = Math.max(0, mascotaData.hambre - 20);
+      msg.textContent = `Shhh... ${mascotaData.nombre} está teniendo dulces sueños. 💤`;
+      for(let i=0; i<3; i++) setTimeout(() => spawnFX("💤"), i*400);
+      ganarXP(10);
+    }
+  }
+  
+  actMascotaUi();
+}
+
+function reiniciarMascota() {
+  if (!confirm("¿Segura que querés cambiar a tu compañero y perder su progreso y nivel?")) return;
+  mascotaData.tipo = null;
+  document.getElementById("mascota-selector").classList.remove("hidden");
+  document.getElementById("mascota-name").classList.add("hidden");
+  document.getElementById("mascota-interact").classList.add("hidden");
+  try {
+    localStorage.removeItem("mascotaData");
+  } catch(e) {}
+}
+
+// Lógica Regalos de Mascota
+const REGALOS_MASCOTA = [
+  "Fue a escarbar al jardín y encontró una cajita para vos: 'Sos hermosa y valés oro, nunca lo dudes.'",
+  "Te trajo este mensaje en la boca: 'Sonreí, que yo siempre voy a estar acá para vos.'",
+  "Apareció un sobrecito misterioso... 'Hoy va a ser un buen día. ¡Confía en vos!'",
+  "Te está dando pataditas porque quiere darte este mensaje de él: 'Te quiero muchísimo y merecés lo mejor.'",
+  "Encontró esto escondido debajo de una hoja: 'No importa qué tan pesado sea el día, tenés permiso para descansar.'"
+];
+
+function evaluarRegaloMascota() {
+  const regaloEl = document.getElementById("mascota-regalo");
+  if (!regaloEl || !regaloEl.classList.contains("hidden")) return;
+  // Solo un % bajo de chances de que aparezca un regalo si interactúa mucho
+  if (Math.random() < 0.15) {
+    regaloEl.classList.remove("hidden");
+  }
+}
+
+function abrirRegaloMascota() {
+  const regaloEl = document.getElementById("mascota-regalo");
+  const modal = document.getElementById("regalo-modal");
+  const text = document.getElementById("regalo-text");
+  
+  regaloEl.classList.add("hidden"); 
+  
+  const ctxName = mascotaData.nombre ? mascotaData.nombre : 'Tu mascota';
+  const mensajeAleatorio = REGALOS_MASCOTA[Math.floor(Math.random() * REGALOS_MASCOTA.length)];
+  text.textContent = `¡${ctxName} te trajo un regalo! \n\n${mensajeAleatorio}`;
+  
+  modal.classList.add("open");
+  ganarXP(50);
+}
+
+function cerrarRegaloMascota() {
+  const modal = document.getElementById("regalo-modal");
+  modal.classList.remove("open");
+}
+
+setInterval(() => {
+  if (mascotaData.tipo) {
+    if (mascotaData.durmiendo) {
+      mascotaData.energia = Math.min(100, mascotaData.energia + 10);
+      mascotaData.hambre = Math.max(0, mascotaData.hambre - 1);
+    } else {
+      mascotaData.hambre = Math.max(0, mascotaData.hambre - 2);
+      mascotaData.energia = Math.max(0, mascotaData.energia - 1);
+      mascotaData.felicidad = Math.max(0, mascotaData.felicidad - 1);
+      
+      if (mascotaData.hambre < 20 || mascotaData.energia < 20) {
+        mascotaData.felicidad = Math.max(0, mascotaData.felicidad - 2);
+      }
+    }
+    actMascotaUi();
+  }
+}, 60000); 
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (mascotaData.tipo && mascotaData.nombre) {
+    iniciarMascotaUI();
+  } else if (mascotaData.tipo && !mascotaData.nombre) {
+    document.getElementById("mascota-selector").classList.add("hidden");
+    document.getElementById("mascota-name").classList.remove("hidden");
+  } else {
+    document.getElementById("mascota-selector").classList.remove("hidden");
+  }
+});

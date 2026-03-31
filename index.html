@@ -54,6 +54,9 @@
       <button class="nav-btn" onclick="scrollToSection('mensaje')" id="nav-mensaje">💌 Mensaje</button>
       <button class="nav-btn" onclick="scrollToSection('musica')" id="nav-musica">🎧 Música</button>
       <button class="nav-btn" onclick="scrollToSection('ternura')" id="nav-ternura">🐾 Un respiro</button>
+      <button class="nav-btn" onclick="scrollToSection('teamo')" id="nav-teamo">🌍 Te amo</button>
+      <button class="nav-btn" onclick="scrollToSection('motivos')" id="nav-motivos">✨ Motivos</button>
+      <button class="nav-btn" onclick="scrollToSection('mascota')" id="nav-mascota">🏡 Compañero</button>
     </nav>
 
     <!-- ============= SECCIÓN 1: CALMA ============= -->
@@ -361,7 +364,118 @@
       </div>
     </section>
 
-        
+    <!-- ============= SECCIÓN TE AMO ============= -->
+    <section id="teamo" class="section">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-emoji" aria-hidden="true">🌍</span>
+          <h2 class="section-title">En todos los idiomas</h2>
+          <p class="section-subtitle">Porque una sola forma no alcanza para decirlo</p>
+        </div>
+
+        <div class="teamo-container" id="teamo-container">
+           <div class="teamo-word" id="teamo-word">Te amo</div>
+           <div class="teamo-language" id="teamo-language">Español</div>
+        </div>
+
+        <button class="btn-primary btn-teamo" onclick="cambiarIdioma()">
+          <span class="btn-icon" aria-hidden="true">💫</span>
+          Descubrir otro más
+        </button>
+      </div>
+    </section>
+
+    <!-- ============= SECCIÓN MOTIVOS ============= -->
+    <section id="motivos" class="section">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-emoji" aria-hidden="true">✨</span>
+          <h2 class="section-title">Mi Frasco de Motivos</h2>
+          <p class="section-subtitle">Tantas razones por las que te elijo todos los días</p>
+        </div>
+
+        <div class="motivos-container">
+          <div class="frasco-wrap" onclick="sacarMotivo()">
+            <div class="frasco" id="frasco-motivos">
+              <div class="frasco-cap"></div>
+              <div class="frasco-body">
+                <div class="frasco-label">Para Vos</div>
+                <div class="frasco-stars" id="frasco-stars"></div>
+              </div>
+            </div>
+            <p class="frasco-hint">Tocá el frasco para sacar un papelito</p>
+          </div>
+          
+          <div class="motivo-card hidden" id="motivo-card">
+            <div class="motivo-text" id="motivo-text"></div>
+            <button class="btn-secundario" onclick="ocultarMotivo()" style="margin-top:1rem;">Guardar de nuevo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= SECCIÓN MASCOTA ============= -->
+    <section id="mascota" class="section">
+      <div class="section-inner">
+        <div class="section-header">
+          <span class="section-emoji" aria-hidden="true">🏡</span>
+          <h2 class="section-title">Tu Compañero</h2>
+          <p class="section-subtitle">Alguien que siempre te va a esperar acá</p>
+        </div>
+
+        <div class="mascota-card">
+          <div class="mascota-selector" id="mascota-selector">
+             <h3>Elegí a tu compañero:</h3>
+             <div class="mascota-opciones">
+                <button class="btn-mascota-sel" onclick="elegirMascota('perrito')">
+                  <img src="assets/images/perrito-mascota.png" width="90" height="90" alt="Perrito" style="border-radius:16px; margin-bottom:0.5rem; object-fit:cover;">
+                  <span>🐶 Perrito</span>
+                </button>
+                <button class="btn-mascota-sel" onclick="elegirMascota('gatito')">
+                  <img src="assets/images/gatito-mascota.png" width="90" height="90" alt="Gatito" style="border-radius:16px; margin-bottom:0.5rem; object-fit:cover;">
+                  <span>🐱 Gatito</span>
+                </button>
+             </div>
+          </div>
+          
+          <div class="mascota-name hidden" id="mascota-name">
+            <h3>¿Cómo se llama tu compañero?</h3>
+            <input type="text" id="mascota-nombre-input" placeholder="Dale un nombre..." maxlength="15" />
+            <br>
+            <button class="btn-primary" onclick="guardarNombreMascota()" style="margin-top:1.5rem; padding: 0.6rem 1.5rem; font-size:0.9rem;">Conocerlo</button>
+          </div>
+          
+          <div class="mascota-interact hidden" id="mascota-interact">
+             <div class="mascota-header">
+               <h3 id="mascota-nombre-display" style="font-size:1.4rem; color:var(--text-primary); margin-bottom:0.3rem;"></h3>
+               <div class="mascota-nivel" id="mascota-nivel-badge">Lvl 1</div>
+             </div>
+             
+             <div class="mascota-avatar-wrap" id="mascota-avatar-wrap">
+               <img src="" alt="Mascota" class="mascota-avatar-img" id="mascota-avatar" />
+               <div id="mascota-fx-container"></div>
+               <!-- Regalo de mascota -->
+               <div class="mascota-regalo hidden" id="mascota-regalo" onclick="abrirRegaloMascota()">
+                  <span aria-hidden="true" style="font-size: 2.5rem; filter:drop-shadow(0 0 10px rgba(255,255,255,0.5));">🎁</span>
+               </div>
+             </div>
+             <div class="mascota-status">
+               <div class="status-bar"><label>Felicidad</label><div class="bar-bg"><div class="bar-fill" id="bar-felicidad"></div></div></div>
+               <div class="status-bar"><label>Hambre</label><div class="bar-bg"><div class="bar-fill" id="bar-hambre"></div></div></div>
+               <div class="status-bar"><label>Energía</label><div class="bar-bg"><div class="bar-fill" id="bar-energia"></div></div></div>
+             </div>
+             
+             <div class="mascota-acciones">
+               <button class="btn-accion" onclick="accionMascota('acariciar')">✋ Acariciar</button>
+               <button class="btn-accion" onclick="accionMascota('alimentar')">🍖 Alimentar</button>
+               <button class="btn-accion" onclick="accionMascota('dormir')">💤 Dormir</button>
+               <button class="btn-accion" onclick="reiniciarMascota()" style="background:transparent; border:1px solid rgba(255,255,255,0.2);">Cambiar</button>
+             </div>
+             <p class="mascota-mensaje" id="mascota-mensaje">Tu compañero está feliz de verte.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- ===== BOTÓN SOS FLOTANTE ===== -->
     <button
@@ -432,6 +546,15 @@
         <p class="sorpresa-firma">Te quiero exactamente como sos. 💙</p>
       </div>
     </section>
+
+    <!-- Modal Regalo -->
+    <div class="regalo-modal-overlay" id="regalo-modal">
+       <div class="regalo-modal-content">
+          <div class="regalo-modal-icon">💌</div>
+          <div class="regalo-modal-text" id="regalo-text">Mensaje...</div>
+          <button class="regalo-btn-close" onclick="cerrarRegaloMascota()">¡Qué lindo! Gracias</button>
+       </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer" role="contentinfo">
